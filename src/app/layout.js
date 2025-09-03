@@ -6,6 +6,9 @@ import "./globals.css";
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
+if (!publishableKey) {
+  throw new Error("Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY");
+}
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
