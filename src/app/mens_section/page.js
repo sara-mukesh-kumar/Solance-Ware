@@ -1,5 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import AddToCartButton from "@/components/AddToCartButton";
+
+const prisma = new PrismaClient();
+
 export default async function mens_section() {
   const products = await prisma.product.findMany({
     where: { category: "mens" },
@@ -13,7 +16,7 @@ export default async function mens_section() {
           Men’s Collection
         </h1>
         <p className="text-lg text-gray-600 mt-3">
-          Elevate your style with classic essentials and modern fits.{" "}
+           Elevate your style with classic essentials and modern fits.
         </p>
       </div>
 
@@ -33,9 +36,7 @@ export default async function mens_section() {
                 ? product.name.substring(0, 50) + "..."
                 : product.name}
             </h2>
-            <p className="text-gray-600 text-sm flex-1">
-              {product.description}
-            </p>
+            <p className="text-gray-600 text-sm flex-1">{product.description}</p>
             <p className="text-xl font-bold mt-2">₹{product.price}</p>
 
             {/* ✅ Use new AddToCartButton */}
