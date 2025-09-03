@@ -45,7 +45,9 @@ export default function CartPage() {
       } else if (payload?.item) {
         // Replace with updated item
         setCart((prev) =>
-          prev.map((i) => (i.id === itemId ? { ...i, quantity: payload.item.quantity } : i))
+          prev.map((i) =>
+            i.id === itemId ? { ...i, quantity: payload.item.quantity } : i
+          )
         );
       }
     } finally {
@@ -56,16 +58,20 @@ export default function CartPage() {
   // Totals
   const { totalQty, subtotal } = useMemo(() => {
     const totalQty = cart.reduce((s, i) => s + i.quantity, 0);
-    const subtotal = cart.reduce((s, i) => s + i.quantity * i.product.price, 0);
+    const subtotal = cart.reduce(
+      (s, i) => s + i.quantity * i.product.price,
+      0
+    );
     return { totalQty, subtotal };
   }, [cart]);
 
   const handleBuy = () => {
     if (!cart.length) return;
     // Hook up to your checkout later
-    alert( "🚧 Under Build 🚧\nThank you for visiting 🙏",
-  "color: white; background: #f87171; font-size:18px; font-weight:bold; padding:8px 12px; border-radius:8px;",
-  "color: #10b981; font-size:16px; font-weight:bold;"
+    alert(
+      "🚧 Under Build 🚧\nThank you for visiting 🙏",
+      "color: white; background: #f87171; font-size:18px; font-weight:bold; padding:8px 12px; border-radius:8px;",
+      "color: #10b981; font-size:16px; font-weight:bold;"
     );
   };
 
@@ -88,10 +94,10 @@ export default function CartPage() {
               return (
                 <div
                   key={item.id}
-                  className="flex items-center gap-4 border rounded-xl p-4 shadow-sm bg-white hover:shadow-md transition"
+                  className="flex flex-col sm:flex-row sm:items-center gap-4 border rounded-xl p-4 shadow-sm bg-white hover:shadow-md transition"
                 >
                   {/* Image */}
-                  <div className="w-28 h-28 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 mx-auto sm:mx-0">
                     <img
                       src={item.product.imageUrl || "/placeholder.png"}
                       alt={item.product.name}
@@ -110,41 +116,57 @@ export default function CartPage() {
                       </p>
                     )}
 
-                    <div className="mt-2 flex items-center gap-3 text-sm">
+                    <div className="mt-2 flex items-center gap-3 text-sm flex-wrap">
                       <span className="text-gray-700">Price:</span>
-                      <span className="font-medium">₹{item.product.price}</span>
-                      <span className="text-gray-300">•</span>
+                      <span className="font-medium">
+                        ₹{item.product.price}
+                      </span>
+                      <span className="hidden sm:inline text-gray-300">•</span>
                       <span
                         className={`font-medium ${
                           stock > 0 ? "text-green-600" : "text-red-600"
                         }`}
                       >
-                        {stock > 0 ? `In stock: ${stock}` : "Out of stock"}
+                        {stock > 0
+                          ? `In stock: ${stock}`
+                          : "Out of stock"}
                       </span>
                     </div>
 
                     {/* Quantity controls */}
-                    <div className="mt-3 flex items-center gap-3">
+                    <div className="mt-3 flex items-center gap-3 flex-wrap">
                       <button
                         onClick={() => updateQty(item.id, "dec")}
                         disabled={busyId === item.id || !canDec}
                         className={`w-9 h-9 rounded-lg border flex items-center justify-center
-                          ${canDec ? "hover:bg-gray-100" : "opacity-50 cursor-not-allowed"}
+                          ${
+                            canDec
+                              ? "hover:bg-gray-100"
+                              : "opacity-50 cursor-not-allowed"
+                          }
                         `}
                         title="Decrease"
                       >
                         −
                       </button>
 
-                      <div className="w-12 text-center font-semibold select-none">{item.quantity}</div>
+                      <div className="w-12 text-center font-semibold select-none">
+                        {item.quantity}
+                      </div>
 
                       <button
                         onClick={() => updateQty(item.id, "inc")}
                         disabled={busyId === item.id || !canInc}
                         className={`w-9 h-9 rounded-lg border flex items-center justify-center
-                          ${canInc ? "hover:bg-gray-100" : "opacity-50 cursor-pointer"}
+                          ${
+                            canInc
+                              ? "hover:bg-gray-100"
+                              : "opacity-50 cursor-pointer"
+                          }
                         `}
-                        title={canInc ? "Increase" : "Max stock reached"}
+                        title={
+                          canInc ? "Increase" : "Max stock reached"
+                        }
                       >
                         +
                       </button>
@@ -153,7 +175,7 @@ export default function CartPage() {
                       <button
                         onClick={() => removeFromCart(item.id)}
                         disabled={busyId === item.id}
-                        className="ml-4 h-8 w-25 rounded-4xl bg-red-500 text-white hover:bg-red-800 text-sm cursor-pointer"
+                        className="ml-0 sm:ml-4 h-8 px-3 rounded-full bg-red-500 text-white hover:bg-red-800 text-sm cursor-pointer"
                       >
                         Remove
                       </button>
@@ -161,9 +183,11 @@ export default function CartPage() {
                   </div>
 
                   {/* Line total */}
-                  <div className="text-right">
+                  <div className="text-right sm:self-start">
                     <div className="text-sm text-gray-500">Total</div>
-                    <div className="text-lg font-semibold">₹{lineTotal.toFixed(2)}</div>
+                    <div className="text-lg font-semibold">
+                      ₹{lineTotal.toFixed(2)}
+                    </div>
                   </div>
                 </div>
               );
@@ -179,16 +203,22 @@ export default function CartPage() {
             </div>
             <div className="flex justify-between text-gray-700 mt-2">
               <span>Subtotal</span>
-              <span className="font-semibold">₹{subtotal.toFixed(2)}</span>
+              <span className="font-semibold">
+                ₹{subtotal.toFixed(2)}
+              </span>
             </div>
             <button
               onClick={handleBuy}
               disabled={!cart.length}
               className={`mt-5 w-full py-3 rounded-lg text-white transition 
-                ${cart.length ? "bg-black hover:bg-gray-800" : "bg-gray-300 cursor-not-allowed"}
+                ${
+                  cart.length
+                    ? "bg-black hover:bg-gray-800"
+                    : "bg-gray-300 cursor-not-allowed"
+                }
               `}
             >
-              Buy Now 
+              Buy Now
             </button>
           </aside>
         </div>
