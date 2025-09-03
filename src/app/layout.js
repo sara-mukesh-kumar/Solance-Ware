@@ -51,20 +51,11 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/header";
 import FooterSection from "@/components/footer";
+import ClientClerkProvider from "@/components/ClientClerkProvider"; // import client wrapper
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 
-const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-// Fonts
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata = {
   title: "Solance",
@@ -72,37 +63,18 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // Instead of throwing, warn if key is missing
-  if (!publishableKey) {
-    console.warn(
-      "WARNING: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing. ClerkProvider will not initialize."
-    );
-    // Return layout without ClerkProvider
-    return (
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] flex flex-col min-h-screen`}
-        >
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <FooterSection />
-        </body>
-      </html>
-    );
-  }
-
-  // Render normally if key exists
   return (
-    <ClerkProvider publishableKey={publishableKey}>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] flex flex-col min-h-screen`}
-        >
-          <Header />
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] flex flex-col min-h-screen`}
+      >
+        <ClientClerkProvider>
+          <Header /> {/* now SignedIn inside Header works */}
           <main className="flex-grow">{children}</main>
           <FooterSection />
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClientClerkProvider>
+      </body>
+    </html>
   );
 }
+
