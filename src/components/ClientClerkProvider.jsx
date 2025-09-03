@@ -16,15 +16,15 @@
 // src/components/ClientClerkProvider.jsx
 "use client";
 import { ClerkProvider } from "@clerk/nextjs";
+import React from "react";
+
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default function ClientClerkProvider({ children }) {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
   if (!publishableKey) {
-    console.warn(
-      "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing. ClerkProvider will not initialize."
+    throw new Error(
+      "Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY in environment variables."
     );
-    return <>{children}</>; // fallback, render children without Clerk
   }
 
   return <ClerkProvider publishableKey={publishableKey}>{children}</ClerkProvider>;
