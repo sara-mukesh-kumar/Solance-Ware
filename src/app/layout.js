@@ -21,7 +21,7 @@
 //     </html>
 //   );
 // }
-
+"use client";
 import Header from "@/components/header";
 import FooterSection from "@/components/footer";
 import ClientClerkProvider from "@/components/ClientClerkProvider";
